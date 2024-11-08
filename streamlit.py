@@ -1,37 +1,45 @@
 from main import Chatbot
 import streamlit as st
 
-bot = Chatbot()
-    
+# Page configuration should be the first Streamlit command
 st.set_page_config(page_title="GPMC BOT")
+
+# Sidebar configuration
 with st.sidebar:
     st.title('AMC Bot')
 
-# Function for generating LLM response
-def generate_response(input):
-    result = bot.rag_chain.invoke(input)
-    return result
+# Caching the Chatbot instance to avoid reloading each time
+@st.cache_resource
+def get_chatbot():
+    return Chatbot()
 
-# Store LLM generated responses
-if "messages" not in st.session_state.keys():
-    st.session_state.messages = [{"role": "assistant", "content": "Welcome, Ask me questions about the GPMC act?"}]
+# Lazy-load the bot and create it only if it's called
+def generate_response(input):
+    bot = get_chatbot()
+    return bot.rag_chain.invoke(input)
+
+# Initialize session state for messages only once
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "Welcome, ask me questions about the GPMC act!"}]
 
 # Display chat messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
-# User-provided prompt
-if input := st.chat_input():
-    st.session_state.messages.append({"role": "user", "content": input})
+# Process user input and generate response
+if input_text := st.chat_input():
+    # Append user message to session state
+    st.session_state.messages.append({"role": "user", "content": input_text})
     with st.chat_message("user"):
-        st.write(input)
+        st.write(input_text)
 
-# Generate a new response if last message is not from assistant
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
-        with st.spinner("Reading the PDF's provided.."):
-            response = generate_response(input) 
-            st.write(response) 
-    message = {"role": "assistant", "content": response}
-    st.session_state.messages.append(message)
+    # Generate response only if the last message was from the user
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Generating response..."):
+                response = generate_response(input_text)
+                st.write(response)
+
+            # Append assistant's response to session state
+            st.session_state.messages.append({"role": "assistant", "content": response})
