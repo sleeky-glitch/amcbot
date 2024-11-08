@@ -24,7 +24,7 @@ os.environ['PINECONE_API_KEY'] = 'pcsk_7WpwPA_CmUETrTpg9yH2hf7ptazvxZ1y25vRNHz9H
 class Chatbot:
     def __init__(self):
         # Load PDF data
-        loader = PyMuPDFLoader('/home/nishant/migrate/amc/GPMC/gpmc.pdf') 
+        loader = PyMuPDFLoader('gpmc.pdf') 
         documents = loader.load()
         
         # Split documents into smaller chunks
