@@ -89,8 +89,4 @@ class Chatbot:
     def ask(self, question):
         return self.rag_chain.invoke(question)
 
-# Instantiate the chatbot and ask a question
-bot = Chatbot()
-question = input("Ask me anything about the GPMC act: ")
-result = bot.ask(question)
-print(result)
+
