@@ -39,7 +39,15 @@ if input_text := st.chat_input():
         with st.chat_message("assistant"):
             with st.spinner("Generating response..."):
                 response = generate_response(input_text)
-                st.write(response)
+
+                # Check if response is a long paragraph and break it into bullet points
+                if isinstance(response, str) and len(response) > 100:
+                    # Split response into sentences or meaningful sections
+                    response_parts = response.split(". ")
+                    formatted_response = "\n".join(f"- {part.strip()}" for part in response_parts if part.strip())
+                    st.markdown(formatted_response)
+                else:
+                    st.write(response)
 
             # Append assistant's response to session state
             st.session_state.messages.append({"role": "assistant", "content": response})
