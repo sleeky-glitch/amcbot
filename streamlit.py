@@ -6,7 +6,7 @@ st.set_page_config(page_title="GPMC BOT")
 
 # Sidebar configuration
 with st.sidebar:
-    st.title('AMC Bot')
+    st.title('Chatbot for the Ahmedabad Municipal Corporation')
 
 # Caching the Chatbot instance to avoid reloading each time
 @st.cache_resource
