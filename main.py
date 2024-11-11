@@ -63,7 +63,7 @@ class Chatbot:
         # Define prompt template
         template = """
         You are a chatbot for the Ahmedabad Government. The Human will ask questions the GPMC act. 
-        Answer these questions and include all the details from the given piece of context 
+        Answer these questions and include all the details from the given piece of context also give references from the context
         If you don't know the answer, just say you don't know. 
 
         Context: {context}
