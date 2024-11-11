@@ -40,25 +40,7 @@ if input_text := st.chat_input("Type your question here..."):
     with st.chat_message("assistant"):
         with st.spinner("Generating response..."):
             response = generate_response(input_text)
-
-            # Check if the response is a string
-            if isinstance(response, str):
-                # If it's a long string, format as bullet points for readability
-                if len(response) > 100:
-                    response_parts = response.split(". ")
-                    formatted_response = "\n".join(f"- {part.strip()}" for part in response_parts if part.strip())
-                    st.markdown(formatted_response)
-                else:
-                    st.write(response)
-
-            # If the response is a list (e.g., multiple pieces of information), handle it properly
-            elif isinstance(response, list):
-                formatted_response = "\n".join(f"- {item.strip()}" for item in response if item.strip())
-                st.markdown(formatted_response)
-
-            # If the response is a dictionary or other complex structure, display it nicely
-            else:
-                st.write(str(response))
+            st.write(str(response))
 
         # Append assistant's response to session state
         st.session_state.messages.append({"role": "assistant", "content": response})
