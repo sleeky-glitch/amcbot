@@ -6,7 +6,7 @@ st.set_page_config(page_title="GPMC BOT")
 
 # Sidebar configuration
 with st.sidebar:
-    st.title('Chatbot for the Ahmedabad Municipal Corporation Sanitation Services')
+    st.title('Chatbot for the Ahmedabad Municipal Corporation GPMC Act')
 
 # Caching the Chatbot instance to avoid reloading each time
 @st.cache_resource
@@ -21,7 +21,7 @@ def generate_response(input_text):
 # Initialize session state for messages only once
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Welcome! Ask me questions about the Sanitation Policies of AMC."}
+        {"role": "assistant", "content": "Welcome! Ask me questions about the GPMC of AMC."}
     ]
 
 # Display chat messages
