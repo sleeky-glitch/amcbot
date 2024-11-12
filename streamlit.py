@@ -13,10 +13,23 @@ with st.sidebar:
 def get_chatbot():
     return Chatbot()
 
-# Lazy-load the bot and create it only if called
+# Function to clean and format the response
 def generate_response(input_text):
     bot = get_chatbot()
-    return bot.rag_chain.invoke(input_text)
+    response = bot.rag_chain.invoke(input_text)
+
+    # Clean special characters and format the response
+    if isinstance(response, str):
+        response = response.replace("\uf8e7", "")  # Remove special symbols
+        response = response.replace("\\n", "\n")   # Replace newline codes with actual newlines
+        response = response.replace("Guj", "Gujarat")  # Expand abbreviations if needed
+
+        # Split long responses into bullet points for readability
+        if len(response) > 100:
+            response_parts = response.split(". ")
+            formatted_response = "\n".join(f"- {part.strip()}" for part in response_parts if part.strip())
+            return formatted_response
+    return response
 
 # Initialize session state for messages only once
 if "messages" not in st.session_state:
@@ -41,15 +54,14 @@ if input_text := st.chat_input("Type your question here..."):
         with st.spinner("Generating response..."):
             response = generate_response(input_text)
 
-            # Format long responses as bullet points for readability
+            # Display the formatted response
             if isinstance(response, str) and len(response) > 100:
-                response_parts = response.split(". ")
-                formatted_response = "\n".join(f"- {part.strip()}" for part in response_parts if part.strip())
-                st.markdown(formatted_response)
+                st.markdown(response)
             else:
                 st.write(response)
 
         # Append assistant's response to session state
         st.session_state.messages.append({"role": "assistant", "content": response})
+
 
 
