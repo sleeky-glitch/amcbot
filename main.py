@@ -10,6 +10,7 @@ from langchain.schema.output_parser import StrOutputParser
 from pinecone import Pinecone as PineconeClient, ServerlessSpec  
 from dotenv import load_dotenv
 from huggingface_hub import login
+import streamlit as st
 
 # Log in to Hugging Face
 login(token='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')
